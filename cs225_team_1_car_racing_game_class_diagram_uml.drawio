@@ -1,0 +1,97 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0" version="26.0.16">
+  <diagram id="diagramId" name="CarRacingGame">
+    <mxGraphModel dx="3082" dy="2072" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="1" fold="1" page="1" pageScale="1" pageWidth="300" pageHeight="300" background="#FFFFFF" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="&lt;b&gt;Race&lt;/b&gt;&lt;br&gt;----------&lt;br&gt;- cars: List&lt;br&gt;- isRunning: Boolean&lt;br&gt;- startTime: Time&lt;br&gt;- endTime: Time&lt;br&gt;----------&lt;br&gt;+ startRace()&lt;br&gt;+ pauseRace()&lt;br&gt;+ resetRace()&lt;br&gt;+ updateRaceStatus()&lt;br&gt;+ checkRaceCompletion()&lt;br&gt;+ calculateResults()" style="shape=rectangle;whiteSpace=wrap;html=1;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="390" y="-410" width="220" height="270" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="&lt;b&gt;Car&lt;/b&gt;&lt;br&gt;----------&lt;br&gt;- id: Integer&lt;br&gt;- engine: Engine&lt;br&gt;- wheels: List&lt;br&gt;- route: Route&lt;br&gt;- currentSpeed: Float&lt;br&gt;- totalTime: Float&lt;br&gt;- currentPosition: Location&lt;br&gt;- isFinished: Boolean&lt;br&gt;----------&lt;br&gt;+ start()&lt;br&gt;+ updateSpeed()&lt;br&gt;+ move()&lt;br&gt;+ applyEvent(obstacle: Obstacle)&lt;br&gt;+ calculateTotalTime()" style="shape=rectangle;whiteSpace=wrap;html=1;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="180" y="95" width="250" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="&lt;b&gt;Engine&lt;/b&gt;&lt;br&gt;----------&lt;br&gt;- horsePower: Float&lt;br&gt;- maxSpeed: Float&lt;br&gt;----------&lt;br&gt;+ getAcceleration(): Float&lt;br&gt;+ getMaxSpeed(): Float" style="shape=rectangle;whiteSpace=wrap;html=1;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="205" y="555" width="200" height="155" as="geometry" />
+        </mxCell>
+        <mxCell id="5" value="&lt;b&gt;Wheel&lt;/b&gt;&lt;br&gt;----------&lt;br&gt;- condition: Float&lt;br&gt;- gripLevel: Float&lt;br&gt;----------&lt;br&gt;+ wearDown()&lt;br&gt;+ getGripLevel(): Float" style="shape=rectangle;whiteSpace=wrap;html=1;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="-10" y="555" width="180" height="155" as="geometry" />
+        </mxCell>
+        <mxCell id="6" value="&lt;b&gt;Route&lt;/b&gt;&lt;br&gt;----------&lt;br&gt;- locations: List&lt;br&gt;- currentIndex: Integer&lt;br&gt;----------&lt;br&gt;+ getNextLocation(): Location&lt;br&gt;+ isRouteComplete(): Boolean&lt;br&gt;+ getDistanceToNext(): Float" style="shape=rectangle;whiteSpace=wrap;html=1;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="535" y="290" width="220" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="7" value="&lt;b&gt;Location&lt;/b&gt;&lt;br&gt;----------&lt;br&gt;- name: String&lt;br&gt;- coordinates: Tuple&lt;br&gt;- hasObstacle: Boolean&lt;br&gt;----------&lt;br&gt;+ getCoordinates(): Tuple&lt;br&gt;+ checkForObstacle(): Boolean" style="shape=rectangle;whiteSpace=wrap;html=1;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="545" y="520" width="200" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="8" value="&lt;b&gt;Obstacle&lt;/b&gt;&lt;br&gt;----------&lt;br&gt;- type: String&lt;br&gt;- impact: Float&lt;br&gt;----------&lt;br&gt;+ applyToCar(car: Car)" style="shape=rectangle;whiteSpace=wrap;html=1;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="-140" y="30" width="220" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="9" value="&lt;b&gt;Randomizer&lt;/b&gt;&lt;br&gt;----------&lt;br&gt;(no attributes)&lt;br&gt;----------&lt;br&gt;+ generateRandomSpeed(): Float&lt;br&gt;+ generateRandomEvent(): Obstacle&lt;br&gt;+ generateDelay(): Float" style="shape=rectangle;whiteSpace=wrap;html=1;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="70" y="-290" width="220" height="185" as="geometry" />
+        </mxCell>
+        <mxCell id="10" value="&lt;b&gt;RaceDisplay&lt;/b&gt;&lt;br&gt;----------&lt;br&gt;(no attributes)&lt;br&gt;----------&lt;br&gt;+ updateVisuals(cars: List)&lt;br&gt;+ displayCarStats(car: Car)&lt;br&gt;+ announceWinner(car: Car)" style="shape=rectangle;whiteSpace=wrap;html=1;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="840" y="190" width="220" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="11" value="&lt;b&gt;UserInterface&lt;/b&gt;&lt;br&gt;----------&lt;br&gt;(no attributes)&lt;br&gt;----------&lt;br&gt;+ startButtonPressed()&lt;br&gt;+ pauseButtonPressed()&lt;br&gt;+ resetButtonPressed()&lt;br&gt;+ selectNumberOfCars(num: Integer)&lt;br&gt;+ showMenu()" style="shape=rectangle;whiteSpace=wrap;html=1;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="490" y="10" width="220" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="12" value="&lt;b&gt;Leaderboard&lt;/b&gt;&lt;br&gt;----------&lt;br&gt;&lt;b&gt;- records: List&lt;/b&gt;&lt;br&gt;----------&lt;br&gt;+ updateRecords(car: Car, time: Time)&lt;br&gt;+ displayLeaderboard()" style="shape=rectangle;whiteSpace=wrap;html=1;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="680" y="-230" width="220" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="13" value="manages&#xa;(1 to 1..*)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jettySize=auto;html=1;fontSize=16;" parent="1" source="2" target="3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="14" value="composed of" style="edgeStyle=orthogonalEdgeStyle;endArrow=diamond;endFill=1;html=1;fontSize=16;" parent="1" source="3" target="4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="15" value="composed of (4)" style="edgeStyle=orthogonalEdgeStyle;endArrow=diamond;endFill=1;html=1;fontSize=16;" parent="1" source="3" target="5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="16" value="follows" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=16;" parent="1" source="3" target="6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="17" value="consists of" style="edgeStyle=orthogonalEdgeStyle;endArrow=diamond;endFill=0;html=1;fontSize=16;" parent="1" source="6" target="7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="18" value="applies" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=block;html=1;fontSize=16;" parent="1" source="3" target="8" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="19" value="uses" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=block;html=1;fontSize=16;" parent="1" source="3" target="9" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="20" value="uses" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=block;html=1;fontSize=16;" parent="1" source="2" target="9" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="21" value="generates" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=16;" parent="1" source="9" target="8" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="22" value="updates" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=16;" parent="1" source="2" target="10" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="23" value="controls" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=16;" parent="1" source="11" target="2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="24" value="updates" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=16;" parent="1" source="2" target="12" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="25" value="displays" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=16;" parent="1" source="11" target="12" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="26" value="interacts with" style="edgeStyle=orthogonalEdgeStyle;html=1;fontSize=16;" parent="1" source="11" target="10" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="27" value="notifies" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=block;html=1;fontSize=16;" parent="1" source="3" target="10" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NJJHL2VE8VW6fS4L2kOb-30" value="Text" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="10" y="240" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NJJHL2VE8VW6fS4L2kOb-31" value="&lt;div&gt;Developer: Abraham Arocha&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="-140" y="-510" width="270" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NJJHL2VE8VW6fS4L2kOb-32" value="&lt;div&gt;&lt;b&gt;Car Racing Game Class Diagram&lt;/b&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="342.5" y="-510" width="315" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
