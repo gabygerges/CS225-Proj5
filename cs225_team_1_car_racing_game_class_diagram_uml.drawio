@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:135.0) Gecko/20100101 Firefox/135.0" version="26.0.16">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:136.0) Gecko/20100101 Firefox/136.0" version="26.1.0">
   <diagram id="diagramId" name="CarRacingGame">
-    <mxGraphModel dx="3082" dy="2072" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="1" fold="1" page="1" pageScale="1" pageWidth="300" pageHeight="300" background="#FFFFFF" math="0" shadow="0">
+    <mxGraphModel dx="1740" dy="1496" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="1" fold="1" page="1" pageScale="1" pageWidth="300" pageHeight="300" background="#FFFFFF" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -82,13 +82,13 @@
         <mxCell id="27" value="notifies" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=block;html=1;fontSize=16;" parent="1" source="3" target="10" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="NJJHL2VE8VW6fS4L2kOb-30" value="Text" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="NJJHL2VE8VW6fS4L2kOb-30" value="Text" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="10" y="240" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="NJJHL2VE8VW6fS4L2kOb-31" value="&lt;div&gt;Developer: Abraham Arocha&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;" vertex="1" parent="1">
-          <mxGeometry x="-140" y="-510" width="270" height="30" as="geometry" />
+        <mxCell id="NJJHL2VE8VW6fS4L2kOb-31" value="&lt;div&gt;Developers:&lt;/div&gt;&lt;div&gt;Abraham Arocha&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;MuiChiplabel-0-2-1359&quot;&gt;Baheeja Muntasser&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;MuiChiplabel-0-2-1359&quot;&gt;Gabi Gerges&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span class=&quot;MuiChiplabel-0-2-1359&quot;&gt;Lucas Martins&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;" parent="1" vertex="1">
+          <mxGeometry x="-140" y="-503" width="270" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="NJJHL2VE8VW6fS4L2kOb-32" value="&lt;div&gt;&lt;b&gt;Car Racing Game Class Diagram&lt;/b&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=0" vertex="1" parent="1">
+        <mxCell id="NJJHL2VE8VW6fS4L2kOb-32" value="&lt;div&gt;&lt;b&gt;Car Racing Game Class Diagram&lt;/b&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=0" parent="1" vertex="1">
           <mxGeometry x="342.5" y="-510" width="315" height="30" as="geometry" />
         </mxCell>
       </root>
