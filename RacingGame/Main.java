@@ -9,7 +9,8 @@ public class Main {
         
         // Prompt user for number of laps.
         String lapsInput = JOptionPane.showInputDialog(null, 
-                "Enter the number of laps:", "2");
+                "Enter the number of laps:", 
+                "2");
         int laps = 2;
         try {
             laps = Integer.parseInt(lapsInput);
@@ -19,30 +20,45 @@ public class Main {
         race.setTotalLaps(laps);
 
         /*
-         *  We define FIVE checkpoints (A,B,C,D,E) so that the last checkpoint (E) 
-         *  is physically the same as the first (A). This helps multi-lap transitions 
-         *  appear seamless with no visible teleportation.
-         *  
-         *  TRACK_CENTER_X=500, TRACK_CENTER_Y=250, a=350, b=180
-         *   angle=0    => (850, 250)
-         *   angle=pi/2 => (500, 430)
-         *   angle=pi   => (150, 250)
-         *   angle=3pi/2=> (500, 70)
-         *   angle=2pi  => (850, 250) same as angle=0
+         * We'll define an oval with four main checkpoints: 
+         *   A (angle=0), B (angle=π/2), C (angle=π), D (angle=3π/2)
+         * and then a FIFTH checkpoint physically identical to the first 
+         * at angle=2π. 
+         * That ensures we only finalize a lap once the car crosses 
+         * the start/finish line again.
          */
-        
-        Location A = new Location("A", 850, 250, 0f);
-        Location B = new Location("B", 500, 430, (float)(Math.PI/2));
-        Location C = new Location("C", 150, 250, (float)Math.PI);
-        Location D = new Location("D", 500, 70, (float)(3*Math.PI/2));
-        // E is physically same as A:
-        Location E = new Location("E", 850, 250, (float)(2*Math.PI));
-        
-        // For each route, we rotate the start location 
-        // but still have all five checkpoints so the track loops smoothly.
-        Route route1 = new Route(Arrays.asList(A, B, C, D, E));
-        Route route2 = new Route(Arrays.asList(B, C, D, E, A));
-        Route route3 = new Route(Arrays.asList(C, D, E, A, B));
+
+        // --- Car #1 route: A->B->C->D->A(2π)
+        Location A0 = new Location("A", 850, 250, 0f);
+        Location B  = new Location("B", 500, 430, (float)(Math.PI / 2));
+        Location C  = new Location("C", 150, 250, (float)Math.PI);
+        Location D  = new Location("D", 500, 70,  (float)(3 * Math.PI / 2));
+        Location A2 = new Location("A", 850, 250, (float)(2 * Math.PI)); 
+        // physically same as A0, but angle=2π
+
+        Route route1 = new Route(Arrays.asList(A0, B, C, D, A2));
+
+        // --- Car #2 route: B->C->D->A(2π)->B(2π+π/2)
+        Location Bstart = new Location("B", 500, 430, (float)(Math.PI / 2));
+        Location Bend   = new Location("B", 500, 430, (float)(Math.PI * 2 + Math.PI / 2));
+        Route route2 = new Route(Arrays.asList(
+            Bstart,
+            new Location("C", 150, 250, (float)Math.PI),
+            new Location("D", 500, 70,  (float)(3 * Math.PI / 2)),
+            new Location("A", 850, 250, (float)(2 * Math.PI)),
+            Bend
+        ));
+
+        // --- Car #3 route: C->D->A(2π)->B(2π+π/2)->C(3π)
+        Location Cstart = new Location("C", 150, 250, (float)Math.PI);
+        Location Cend   = new Location("C", 150, 250, (float)(Math.PI * 3));
+        Route route3 = new Route(Arrays.asList(
+            Cstart,
+            new Location("D", 500, 70,  (float)(3 * Math.PI / 2)),
+            new Location("A", 850, 250, (float)(2 * Math.PI)),
+            new Location("B", 500, 430, (float)(2 * Math.PI + Math.PI / 2)),
+            Cend
+        ));
 
         // Create engines.
         Engine engine1 = new Engine(200, 10);
@@ -74,7 +90,7 @@ public class Main {
         Car car2 = new Car(2, engine2, wheels2, route2);
         Car car3 = new Car(3, engine3, wheels3, route3);
 
-        // Set total laps for multi-lap logic.
+        // Assign total laps (multi-lap logic).
         car1.setTotalLaps(laps);
         car2.setTotalLaps(laps);
         car3.setTotalLaps(laps);
