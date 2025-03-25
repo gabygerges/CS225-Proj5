@@ -33,7 +33,7 @@ public class Main {
         
         Location A = new Location("A", 850, 250, (float)Math.PI);
         Location B = new Location("B", 500, 430, (float)(Math.PI/2));
-        Location E = new Location("", 150, 250, (float)Math.PI);
+        //Location E = new Location("", 150, 250, (float)Math.PI);
         Location D = new Location("D", 500, 70, (float)(3*Math.PI/2));
         Location C = new Location("C", 850, 250, (float)(2*Math.PI));
 
