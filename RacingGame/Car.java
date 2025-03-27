@@ -1,5 +1,11 @@
-// Developed by: Abraham Arocha
-
+/**
+ * Represents a car in the racing simulation.
+ * Handles movement, lap tracking, pit stops, and rendering data.
+ * Each car has an engine, wheels, a predefined route, and status fields to
+ * simulate realistic race behavior over multiple laps.
+ *
+ * Developed by: Abraham Arocha
+ */
 import java.util.List;
 
 public class Car {
@@ -37,6 +43,14 @@ public class Car {
     private float bestLapTime = Float.MAX_VALUE;
     private float lapStartTime = 0f;
 
+    /**
+     * Constructs a Car with a given ID, engine, wheel list, and route.
+     *
+     * @param id     unique identifier for the car
+     * @param engine engine used by the car
+     * @param wheels list of wheels for wear simulation
+     * @param route  route to be followed during the race
+     */
     public Car(int id, Engine engine, List<Wheel> wheels, Route route) {
         this.id = id;
         this.engine = engine;
@@ -59,23 +73,102 @@ public class Car {
     }
 
     // Basic getters
+    /**
+     * Returns the car's unique identifier.
+     *
+     * @return car ID
+     */
     public int getId() { return id; }
+
+    /**
+     * Returns the car's engine.
+     *
+     * @return the engine
+     */
     public Engine getEngine() { return engine; }
+
+    /**
+     * Returns the car's route.
+     *
+     * @return the route
+     */
     public Route getRoute() { return route; }
+
+    /**
+     * Returns the total elapsed time for this car.
+     *
+     * @return total time in seconds
+     */
     public float getTotalTime() { return totalTime; }
+
+    /**
+     * Indicates whether the car has finished the race.
+     *
+     * @return true if finished, false otherwise
+     */
     public boolean isFinished() { return isFinished; }
+
+    /**
+     * Gets the car's current speed.
+     *
+     * @return current speed
+     */
     public float getCurrentSpeed() { return currentSpeed; }
+
+    /**
+     * Gets the current X position for rendering.
+     *
+     * @return X coordinate
+     */
     public float getCurrentX() { return currentX; }
+
+    /**
+     * Gets the current Y position for rendering.
+     *
+     * @return Y coordinate
+     */
     public float getCurrentY() { return currentY; }
+
+    /**
+     * Gets the current angle (heading) of the car.
+     *
+     * @return angle in radians
+     */
     public float getCurrentAngle() { return currentAngle; }
 
     // Multi-lap getters/setters
+    /**
+     * Gets the current lap number the car is on.
+     *
+     * @return current lap number
+     */
     public int getCurrentLap() { return currentLap; }
+
+    /**
+     * Gets the total number of laps for the race.
+     *
+     * @return total laps
+     */
     public int getTotalLaps() { return totalLaps; }
+
+    /**
+     * Sets the total number of laps for the race.
+     *
+     * @param laps total number of laps
+     */
     public void setTotalLaps(int laps) { this.totalLaps = laps; }
+
+    /**
+     * Returns the best (shortest) lap time recorded so far.
+     *
+     * @return best lap time
+     */
     public float getBestLapTime() { return bestLapTime; }
 
-    // Called by Race when it starts
+    /**
+     * Starts the car's race logic by setting the initial speed.
+     * Called at the beginning of the race.
+     */
     public void start() {
         // Begin at max speed
         updateSpeedToMax();
@@ -83,17 +176,19 @@ public class Car {
     }
 
     /**
-     * Sets current speed to the engine's maximum speed.
-     * This is called at:
-     *  - Race start
-     *  - After pit stop is finished
-     *  - Passing a checkpoint (except on the final lap finish)
+     * Restores the car's speed to the engine's maximum speed.
+     * Used after checkpoints, pit stops, and race start.
      */
     private void updateSpeedToMax() {
         currentSpeed = engine.getMaxSpeed();
     }
 
-    // Lateral offset controls
+    /**
+     * Adjusts the car's lateral offset within the track width.
+     * AI cars use this for simple steering.
+     *
+     * @param delta change in lateral offset
+     */
     public void adjustLateralOffset(float delta) {
         lateralOffset += delta;
         if (lateralOffset > maxLateralOffset) {
@@ -104,7 +199,10 @@ public class Car {
         }
     }
 
-    // Called each update cycle
+    /**
+     * Updates the car's position during each simulation step.
+     * Handles pit-stop delays, wheel wear, AI steering, and route progression.
+     */
     public void move() {
         if (isFinished) return;
         
@@ -145,7 +243,10 @@ public class Car {
         updatePosition();
     }
 
-    // The core movement & multi-lap logic
+    /**
+     * Updates the car's position on the route using interpolation logic.
+     * Handles lap completion, checkpoint crossing, and rendering position updates.
+     */
     private void updatePosition() {
         if (isFinished) return;
 
@@ -289,7 +390,10 @@ public class Car {
         currentY = baseY + lateralOffset * (float)rightN_y;
     }
 
-    // Resets everything for a new race
+    /**
+     * Resets the car to the beginning of the race.
+     * Used when starting a new race.
+     */
     public void reset() {
         totalTime = 0f;
         isFinished = false;
@@ -312,12 +416,21 @@ public class Car {
         RaceDisplay.log("Car " + id + " has been reset.");
     }
 
-    // Disallow negative speed
+    /**
+     * Sets the car's speed. Negative values are clamped to zero.
+     *
+     * @param newSpeed the new speed value
+     */
     public void setCurrentSpeed(float newSpeed) {
         currentSpeed = Math.max(newSpeed, 0);
     }
 
-    // Keep angle in [0..2π)
+    /**
+     * Normalizes an angle to the range [0, 2π).
+     *
+     * @param angle the raw angle in radians
+     * @return normalized angle
+     */
     private float normalizeAngle(float angle) {
         while (angle < 0f) {
             angle += 2f * (float)Math.PI;
