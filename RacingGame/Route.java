@@ -26,12 +26,16 @@ public class Route {
         currentIndex++;
     }
 
-    // Checks if we have reached the final checkpoint.
+    /**
+     * We say "complete" once we've reached the final checkpoint index
+     * (size - 1). For example, if we have 5 checkpoints indexed 0..4,
+     * the route is complete once currentIndex >= 4.
+     */
     public boolean isComplete() {
         return currentIndex >= locations.size() - 1;
     }
 
-    // Returns route names (e.g., "A -> B -> C -> D -> E").
+    // Returns route names (e.g., "A -> B -> C -> D -> A").
     public String getRouteNames() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < locations.size(); i++) {

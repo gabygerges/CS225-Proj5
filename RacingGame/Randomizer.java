@@ -14,19 +14,19 @@ public class Randomizer {
     public static float generateRandomLateralDelta() {
         return (float) ((Math.random() * 4) - 2);
     }
-    
+
     // Generate an obstacle near or on the track.
     public static Obstacle generateRandomObstacle() {
         float centerX = RaceDisplay.TRACK_CENTER_X;
         float centerY = RaceDisplay.TRACK_CENTER_Y;
         float a = RaceDisplay.TRACK_A;
         float b = RaceDisplay.TRACK_B;
-        
+
         // Random angle on the ellipse.
         float angle = (float) (Math.random() * 2 * Math.PI);
         float baseX = centerX + a * (float)Math.cos(angle);
         float baseY = centerY + b * (float)Math.sin(angle);
-        
+
         // Tangent & right normal for lateral offset (±30).
         double tx = -a * Math.sin(angle);
         double ty = b * Math.cos(angle);
@@ -38,20 +38,25 @@ public class Randomizer {
         double unitTy = ty / norm;
         double rightNormalX = unitTy;
         double rightNormalY = -unitTx;
-        
+
         float lateral = (float) ((Math.random() * 60) - 30);
         float obsX = baseX + lateral * (float)rightNormalX;
         float obsY = baseY + lateral * (float)rightNormalY;
-        
+
         // Obstacle type, shape, color.
-        String[] types = {"Oil Spill", "Pothole", "Debris"};
+        String[] types = {"Oil Spill", "Pothole", "Debris", "Boost"};
         String type = types[rand.nextInt(types.length)];
         float impact = 1 + rand.nextFloat() * 3;
         int lifetime = 30 + rand.nextInt(40);
-        
-        String[] shapes = {"circle", "square", "triangle"};
-        String shapeType = shapes[rand.nextInt(shapes.length)];
-        
+
+        String shapeType;
+        if (type.equalsIgnoreCase("boost")) {
+            shapeType = "circle";
+        } else {
+            String[] shapes = {"circle", "square", "triangle"};
+            shapeType = shapes[rand.nextInt(shapes.length)];
+        }
+
         Color color;
         switch (type) {
             case "Oil Spill":
@@ -63,11 +68,13 @@ public class Randomizer {
             case "Debris":
                 color = Color.ORANGE;
                 break;
+            case "Boost":
+                color = Color.GREEN;
+                break;
             default:
                 color = Color.MAGENTA;
                 break;
         }
-        
         return new Obstacle(type, impact, obsX, obsY, lifetime, color, shapeType);
     }
 }
