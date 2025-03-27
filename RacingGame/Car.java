@@ -10,7 +10,7 @@ public class Car {
     private float currentSpeed;
     private float totalTime;
     private boolean isFinished;
-    
+
     // For movement interpolation along the oval.
     private Location startLocation;
     private Location endLocation;
@@ -30,7 +30,7 @@ public class Car {
     // Lateral offset for “lane” movement within the track width.
     private float lateralOffset = 0f;
     private final float maxLateralOffset;
-    
+
     // Multi-lap logic.
     private int totalLaps = 1;
     private int currentLap = 1;
@@ -44,15 +44,15 @@ public class Car {
         this.route = route;
         this.totalTime = 0f;
         this.isFinished = false;
-        
+
         // The maximum offset so the car remains on the asphalt.
         this.maxLateralOffset = RaceDisplay.TRACK_HALF_WIDTH - (RaceDisplay.CAR_WIDTH / 2f);
-        
+
         // Initialize from the route’s first checkpoint.
         this.startLocation = route.getLocations().get(0);
         this.endLocation = route.getNextLocation();
         this.travelProgress = 0f;
-        
+
         this.currentX = startLocation.getX();
         this.currentY = startLocation.getY();
         this.currentAngle = startLocation.getAngle();
@@ -107,7 +107,7 @@ public class Car {
     // Called each update cycle
     public void move() {
         if (isFinished) return;
-        
+
         // Pit-stop check
         if (pitStopTimer > 0) {
             // While in pit, speed is forced to 0
@@ -119,28 +119,28 @@ public class Car {
             }
             return;
         }
-        
+
         // If speed is extremely low => pit
         if (currentSpeed < 0.1f) {
             pitStopTimer = PIT_STOP_DURATION;
             RaceDisplay.log("Car " + id + " has slowed too much and is going to the pits.");
             return;
         }
-        
+
         // Simulate wheel wear
         for (Wheel wheel : wheels) {
             wheel.wearDown();
         }
-        
+
         // Accumulate total race time
         totalTime += UPDATE_INTERVAL;
-        
+
         // AI cars (id != 1) do small lateral nudges (not speed changes)
         if (id != 1) {
             float randomDelta = Randomizer.generateRandomLateralDelta();
             adjustLateralOffset(randomDelta);
         }
-        
+
         // Update position with potential sub-steps
         updatePosition();
     }
@@ -157,7 +157,7 @@ public class Car {
         // Current segment angles
         float startAngle = startLocation.getAngle();
         float endAngle = (endLocation != null) ? endLocation.getAngle() : startAngle;
-        
+
         // Ensure a positive segment angle
         float segmentAngle = endAngle - startAngle;
         if (segmentAngle < 0) {
@@ -174,9 +174,9 @@ public class Car {
         // fraction of the current segment to travel in this update
         float distanceIncrement = currentSpeed * UPDATE_INTERVAL * MOVEMENT_FACTOR;
         float rawIncrement = distanceIncrement / arcLength;
-        
+
         float remaining = rawIncrement;
-        
+
         // Break it into sub-steps in case we cross multiple checkpoints in one update
         while (remaining > 0f && !isFinished) {
             float spaceLeft = 1f - travelProgress;
@@ -202,12 +202,12 @@ public class Car {
                     if (currentLap < totalLaps) {
                         // Start the next lap
                         currentLap++;
-                        
+
                         // EXACT final checkpoint coords & angle
                         float finalX = (endLocation != null) ? endLocation.getX() : currentX;
                         float finalY = (endLocation != null) ? endLocation.getY() : currentY;
                         float finalAngle = (endLocation != null) ? endLocation.getAngle() : currentAngle;
-                        
+
                         // Reset the route for the new lap
                         route.reset();
                         travelProgress = 0f;
@@ -215,17 +215,17 @@ public class Car {
                         // Overwrite route's first checkpoint so we truly start next lap
                         Location routeFirst = route.getLocations().get(0);
                         Location customStart = new Location(
-                            routeFirst.getName(),
-                            finalX,
-                            finalY,
-                            finalAngle
+                                routeFirst.getName(),
+                                finalX,
+                                finalY,
+                                finalAngle
                         );
                         this.startLocation = customStart;
                         this.endLocation = route.getNextLocation();
-                        
-                        RaceDisplay.log("Car " + id + " begins Lap " 
-                                        + currentLap + " of " + totalLaps + ".");
-                        
+
+                        RaceDisplay.log("Car " + id + " begins Lap "
+                                + currentLap + " of " + totalLaps + ".");
+
                         // Stop leftover movement to avoid jumps
                         break;
                     } else {
@@ -283,7 +283,7 @@ public class Car {
         double unitTy = ty / norm;
         double rightN_x = unitTy;
         double rightN_y = -unitTx;
-        
+
         // Apply lateral offset
         currentX = baseX + lateralOffset * (float)rightN_x;
         currentY = baseY + lateralOffset * (float)rightN_y;
@@ -301,14 +301,14 @@ public class Car {
         currentLap = 1;
         bestLapTime = Float.MAX_VALUE;
         lapStartTime = 0f;
-        
+
         // Re-init from the route’s first checkpoint
         startLocation = route.getLocations().get(0);
         endLocation = route.getNextLocation();
         currentX = startLocation.getX();
         currentY = startLocation.getY();
         currentAngle = startLocation.getAngle();
-        
+
         RaceDisplay.log("Car " + id + " has been reset.");
     }
 
