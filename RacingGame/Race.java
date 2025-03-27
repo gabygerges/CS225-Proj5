@@ -10,7 +10,7 @@ public class Race {
     private LocalTime startTime;
     private LocalTime endTime;
     private RaceDisplay raceDisplay;
-    
+
     // List to manage obstacles.
     private final List<Obstacle> obstacles;
 
@@ -30,11 +30,11 @@ public class Race {
     public List<Car> getCars() {
         return cars;
     }
-    
+
     public List<Obstacle> getObstacles() {
         return obstacles;
     }
-    
+
     public Car getUserCar() {
         // The user-controlled car is ID=1.
         for (Car car : cars) {
@@ -60,7 +60,7 @@ public class Race {
     public void setTotalLaps(int totalLaps) {
         this.totalLaps = Math.max(1, totalLaps);
     }
-    
+
     // Starts the race.
     public void startRace() {
         if (!isRunning) {
@@ -72,7 +72,7 @@ public class Race {
             }
         }
     }
-    
+
     public void pauseRace() {
         if (isRunning) {
             isRunning = false;
@@ -84,12 +84,12 @@ public class Race {
     public void updateRaceStatus() {
         if (!isRunning)
             return;
-        
+
         // 5% chance per update to spawn a new obstacle.
         if (Math.random() < 0.05) {
             obstacles.add(Randomizer.generateRandomObstacle());
         }
-        
+
         // Update obstacles: degrade lifetime, remove expired.
         for (Iterator<Obstacle> it = obstacles.iterator(); it.hasNext();) {
             Obstacle obs = it.next();
@@ -98,7 +98,7 @@ public class Race {
                 it.remove();
             }
         }
-        
+
         // Check collisions with obstacles.
         for (Car car : cars) {
             for (Iterator<Obstacle> it = obstacles.iterator(); it.hasNext();) {
@@ -112,7 +112,7 @@ public class Race {
                 }
             }
         }
-        
+
         // Move cars; see if any remains unfinished.
         boolean allFinished = true;
         for (Car car : cars) {
@@ -121,11 +121,11 @@ public class Race {
                 allFinished = false;
             }
         }
-        
+
         if (raceDisplay != null) {
             raceDisplay.repaint();
         }
-        
+
         // If all are finished, end the race.
         if (allFinished) {
             isRunning = false;
@@ -138,26 +138,26 @@ public class Race {
     public void calculateResults() {
         Duration duration = Duration.between(startTime, endTime);
         RaceDisplay.log("Race Duration: " + duration.getSeconds() + " seconds");
-        
+
         Car winner = null;
         float bestTime = Float.MAX_VALUE;
         for (Car car : cars) {
             float totalT = car.getTotalTime();
             float bestLap = car.getBestLapTime();
             String bestLapStr = (bestLap == Float.MAX_VALUE) ? "-" : String.format("%.2f", bestLap);
-            
-            RaceDisplay.log("Car " + car.getId() 
-                + " - Route: " + car.getRoute().getRouteNames() 
-                + " - Total Time: " + String.format("%.2f", totalT) + "s"
-                + " - Best Lap: " + bestLapStr + "s");
-            
+
+            RaceDisplay.log("Car " + car.getId()
+                    + " - Route: " + car.getRoute().getRouteNames()
+                    + " - Total Time: " + String.format("%.2f", totalT) + "s"
+                    + " - Best Lap: " + bestLapStr + "s");
+
             if (totalT < bestTime) {
                 bestTime = totalT;
                 winner = car;
             }
         }
         if (winner != null) {
-            RaceDisplay.log("Winner is Car " + winner.getId() 
+            RaceDisplay.log("Winner is Car " + winner.getId()
                     + " with total time " + String.format("%.2f", bestTime) + " seconds!");
             if (raceDisplay != null) {
                 raceDisplay.announceWinner(winner);

@@ -8,22 +8,22 @@ public class Car {
     private float currentSpeed;
     private float totalTime;
     private boolean isFinished;
-    
+
     // For oval movement (angular interpolation).
     private Location startLocation;
     private Location endLocation;
     private float travelProgress;            // fraction from 0 to 1 of the current segment
-    private static final float UPDATE_INTERVAL = 0.1f; 
-    private static final float MOVEMENT_FACTOR = 5.0f; 
-    private static final int PIT_STOP_DURATION = 20;  
-    
+    private static final float UPDATE_INTERVAL = 0.1f;
+    private static final float MOVEMENT_FACTOR = 5.0f;
+    private static final int PIT_STOP_DURATION = 20;
+
     // Current (x,y) coordinates for drawing.
     private float currentX;
     private float currentY;
-    
+
     // Current angle (in radians) along the track for rotation.
     private float currentAngle;
-    
+
     // Pit stop timer.
     private int pitStopTimer = 0;
 
@@ -31,12 +31,12 @@ public class Car {
     private float lateralOffset = 0f;
     // The maximum offset so the car stays on the asphalt.
     private final float maxLateralOffset;
-    
+
     // Multi-lap logic.
-    private int totalLaps = 1;    
-    private int currentLap = 1;   
-    private float bestLapTime = Float.MAX_VALUE; 
-    private float lapStartTime = 0f; 
+    private int totalLaps = 1;
+    private int currentLap = 1;
+    private float bestLapTime = Float.MAX_VALUE;
+    private float lapStartTime = 0f;
 
     public Car(int id, Engine engine, List<Wheel> wheels, Route route) {
         this.id = id;
@@ -45,15 +45,15 @@ public class Car {
         this.route = route;
         this.totalTime = 0f;
         this.isFinished = false;
-        
+
         // Compute max lateral offset from track thickness minus half the car’s width.
         this.maxLateralOffset = RaceDisplay.TRACK_HALF_WIDTH - (RaceDisplay.CAR_WIDTH / 2f);
-        
+
         // Initialize from the first checkpoint.
         this.startLocation = route.getLocations().get(0);
         this.endLocation = route.getNextLocation();
         this.travelProgress = 0f;
-        
+
         this.currentX = startLocation.getX();
         this.currentY = startLocation.getY();
         this.currentAngle = startLocation.getAngle();
@@ -111,7 +111,7 @@ public class Car {
     public float getBestLapTime() {
         return bestLapTime;
     }
-    
+
     public void start() {
         updateSpeed();
         RaceDisplay.log("Car " + id + " started.");
@@ -139,7 +139,7 @@ public class Car {
         if (isFinished) {
             return;
         }
-        
+
         // Handle pit stop.
         if (pitStopTimer > 0) {
             pitStopTimer--;
@@ -149,51 +149,51 @@ public class Car {
             }
             return;
         }
-        
+
         // If speed is super low, we pit.
         if (currentSpeed < 0.1f) {
             pitStopTimer = PIT_STOP_DURATION;
             RaceDisplay.log("Car " + id + " has slowed too much and is going to the pits.");
             return;
         }
-        
+
         // Simulate wheel wear every update.
         for (Wheel wheel : wheels) {
             wheel.wearDown();
         }
-        
+
         // Update total time in race.
         totalTime += UPDATE_INTERVAL;
-        
+
         // AI cars (ID != 1) nudge laterally.
         if (this.id != 1) {
             float randomDelta = Randomizer.generateRandomLateralDelta();
             adjustLateralOffset(randomDelta);
         }
-        
+
         // Update position on the track (with sub-steps to avoid big teleports).
         updatePosition();
     }
-    
+
     private void updatePosition() {
         if (isFinished) {
             return;
         }
-        
+
         float centerX = RaceDisplay.TRACK_CENTER_X;
         float centerY = RaceDisplay.TRACK_CENTER_Y;
         float a = RaceDisplay.TRACK_A;
         float b = RaceDisplay.TRACK_B;
-        
+
         float startAngle = startLocation.getAngle();
         float endAngle = (endLocation != null) ? endLocation.getAngle() : startAngle;
-        
+
         // Segment angle, ensure positive.
         float segmentAngle = endAngle - startAngle;
         if (segmentAngle < 0) {
             segmentAngle += 2 * (float) Math.PI;
         }
-        
+
         float effectiveRadius = (a + b) / 2;
         float arcLength = segmentAngle * effectiveRadius;
         if (arcLength < 0.0001f) {
@@ -201,7 +201,7 @@ public class Car {
         }
         // The fraction we want to advance on this segment in one update:
         float rawIncrement = (currentSpeed * UPDATE_INTERVAL * MOVEMENT_FACTOR) / arcLength;
-        
+
         // Break that increment into sub-chunks so we never skip multiple segments in one go.
         float remainingIncrement = rawIncrement;
         while (remainingIncrement > 0f && !isFinished) {
@@ -209,19 +209,19 @@ public class Car {
             float step = Math.min(spaceLeft, remainingIncrement);
             travelProgress += step;
             remainingIncrement -= step;
-            
+
             // If we just crossed the segment boundary:
             if (travelProgress >= 1.0f && !route.isComplete()) {
                 // Adjust leftover fraction.
                 travelProgress -= 1.0f;
-                
+
                 route.advance();
                 startLocation = endLocation;
                 endLocation = route.getNextLocation();
-                
+
                 // Optionally update speed at each checkpoint crossing.
                 updateSpeed();
-                
+
                 // Recompute angles for the new segment.
                 startAngle = startLocation.getAngle();
                 endAngle = (endLocation != null) ? endLocation.getAngle() : startAngle;
@@ -241,7 +241,7 @@ public class Car {
                     bestLapTime = lapDuration;
                 }
                 lapStartTime = totalTime;
-                
+
                 if (currentLap < totalLaps) {
                     // Start a new lap.
                     currentLap++;
@@ -249,8 +249,8 @@ public class Car {
                     travelProgress = 0f;
                     startLocation = route.getLocations().get(0);
                     endLocation = route.getNextLocation();
-                    RaceDisplay.log("Car " + id + " begins Lap " + currentLap 
-                                    + " of " + totalLaps + ".");
+                    RaceDisplay.log("Car " + id + " begins Lap " + currentLap
+                            + " of " + totalLaps + ".");
                 } else {
                     // Finished all laps.
                     travelProgress = 1.0f;
@@ -259,7 +259,7 @@ public class Car {
                 }
             }
         }
-        
+
         // Now interpolate final angle based on the updated travelProgress.
         startAngle = startLocation.getAngle();
         endAngle = (endLocation != null) ? endLocation.getAngle() : startAngle;
@@ -268,7 +268,7 @@ public class Car {
             segmentAngle += 2 * (float) Math.PI;
         }
         currentAngle = startAngle + travelProgress * segmentAngle;
-        
+
         // Compute base ellipse centerline position.
         float baseX = centerX + a * (float)Math.cos(currentAngle);
         float baseY = centerY + b * (float)Math.sin(currentAngle);
@@ -284,7 +284,7 @@ public class Car {
         double unitTy = ty / norm;
         double rightNormalX = unitTy;
         double rightNormalY = -unitTx;
-        
+
         // Apply lateral offset.
         currentX = baseX + lateralOffset * (float)rightNormalX;
         currentY = baseY + lateralOffset * (float)rightNormalY;
@@ -305,12 +305,12 @@ public class Car {
         currentLap = 1;
         bestLapTime = Float.MAX_VALUE;
         lapStartTime = 0f;
-        
+
         // Reposition to the route's first location.
         currentX = startLocation.getX();
         currentY = startLocation.getY();
         currentAngle = startLocation.getAngle();
-        
+
         RaceDisplay.log("Car " + id + " has been reset.");
     }
 

@@ -86,7 +86,7 @@ public class Main {
 
         // Create GUI on the event thread.
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Oval Car Racing Simulator");
+            JFrame frame = new JFrame("Car Racing Simulator");
             RaceDisplay display = new RaceDisplay(race);
             race.setRaceDisplay(display);
             frame.add(display);
