@@ -21,7 +21,6 @@ public class RaceDisplay extends JPanel {
     private final Race race;
 
     // UI components.
-    // Baheeja - Added start page, countdown, changed
     private JPanel startPage;
     private JPanel racePanel;
     private JPanel controlPanel;
@@ -42,7 +41,7 @@ public class RaceDisplay extends JPanel {
         startPage.setLayout(new BoxLayout(startPage, BoxLayout.Y_AXIS));
         startPage.setBackground(Color.BLUE);
 
-
+        //layered panel to have title on checkerboard
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(1500, 400));
 
@@ -55,16 +54,19 @@ public class RaceDisplay extends JPanel {
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
         titlePanel.setBounds(0, 20, 1500, 200);
 
+        //title of game on startpage
         JLabel title = new JLabel("Car Racing Game", SwingConstants.CENTER);
         title.setFont(new Font("SansSerif", Font.BOLD | Font.ITALIC, 60));
         title.setForeground(Color.RED);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        //desccription of game on start page
         JLabel description = new JLabel("Compete against other cars and win the race!");
         description.setFont(new Font("Times New Roman", Font.BOLD, 50));
         description.setForeground(Color.WHITE);
         description.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        //rules of game on start page
         JLabel rules1 = new JLabel("How to play");
         rules1.setFont(new Font("Times New Roman", Font.BOLD, 40));
         rules1.setForeground(Color.WHITE);
@@ -86,11 +88,14 @@ public class RaceDisplay extends JPanel {
         rules4.setForeground(Color.WHITE);
         rules4.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+
+        // play directions on startpage
         JLabel play = new JLabel("Press play to begin the race.");
         play.setFont(new Font("Times New Roman", Font.BOLD, 20));
         play.setForeground(Color.WHITE);
         play.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        //play button
         JButton playButton = new JButton("Play");
         playButton.setFont(new Font("Arial", Font.BOLD, 30));
         playButton.setBackground(Color.GREEN);
@@ -156,6 +161,8 @@ public class RaceDisplay extends JPanel {
     }
 
     // --- Getters for panels ---
+
+    //gets the race 
     private JPanel getRacePanel() {
         if (racePanel == null) {
             racePanel = new JPanel() {
@@ -171,6 +178,7 @@ public class RaceDisplay extends JPanel {
         return racePanel;
     }
 
+    // the buttons above the race, start, pause, reset
     private JPanel getControlPanel() {
         if (controlPanel == null) {
             controlPanel = new JPanel();
@@ -210,6 +218,7 @@ public class RaceDisplay extends JPanel {
         return controlPanel;
     }
 
+    //side panel scorebaord 
     private JScrollPane getScoreboardPanel() {
         if (scoreboard == null) {
             String[] columns = {"Car ID", "Route", "Lap", "Speed", "Total Time", "Status"};
@@ -223,6 +232,7 @@ public class RaceDisplay extends JPanel {
         return new JScrollPane(scoreboard);
     }
 
+    // bottom panel that gives updates on race
     private JScrollPane getNarratorPanel() {
         if (narrator == null) {
             narrator = new JTextArea(6, 40);
@@ -235,6 +245,7 @@ public class RaceDisplay extends JPanel {
         return new JScrollPane(narrator);
     }
 
+    //checkerbaord for startpage
     private class CheckerBoard extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
@@ -254,7 +265,7 @@ public class RaceDisplay extends JPanel {
     }
 
 
-// --- Countdown ---
+// --- 3 second Countdown ---
     private void startCountdown() {
         if (countdownLabel == null) {
             countdownLabel = new JLabel("4", SwingConstants.CENTER);
