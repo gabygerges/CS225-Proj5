@@ -6,10 +6,10 @@
  * collision detection, and communicates updates to the UI via {@link RaceDisplay}.
  *
  * Responsibilities:
- *   Maintains a list of cars and obstacles<
+ *   Maintains a list of cars and obstacles
  *   Handles race timing and lap tracking
- *   Spawns and removes obstacles during the race<
- *   Detects collisions and applies obstacle effects<
+ *   Spawns and removes obstacles during the race
+ *   Detects collisions and applies obstacle effects
  *   Calculates and announces the race winner
  *
  *   Developed by: Abraham Arocha
