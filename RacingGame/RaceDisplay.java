@@ -1,5 +1,11 @@
-//Developed by Baheeja Muntasser
-
+/**
+ * RaceDisplay is the main graphical panel for the Car Racing Game.
+ * It manages the overall game interface, including the start screen,
+ * race visuals, scoreboard, control buttons (start/pause/reset).
+ * It also handles car input, renders the track and obstacles, and coordinates
+ * timing for race updates and countdowns.
+ * Developed by Baheeja Muntasser, Abraham Arocha
+ */
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -8,6 +14,10 @@ import java.awt.geom.AffineTransform;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * RaceDisplay is the main panel for the car racing game.
+ * It provides the UI and drawing logic for the race, start screen, scoreboard, and game narration.
+ */
 public class RaceDisplay extends JPanel {
     // Track parameters (bigger ellipse with 40px thickness).
     public static final int TRACK_CENTER_X = 500;
@@ -33,6 +43,10 @@ public class RaceDisplay extends JPanel {
     private Timer raceTimer;
     private JLabel countdownLabel;
 
+    /**
+     * Constructs the RaceDisplay panel and initializes the UI layout and game controls.
+     * @param race the Race instance that holds all race data and logic
+     */
     public RaceDisplay(Race race) {
         instance = this;
         this.race = race;
@@ -164,7 +178,10 @@ public class RaceDisplay extends JPanel {
 
     // --- Getters for panels ---
 
-    //gets the race 
+    /**
+     * Returns the race panel which displays the race.
+     * @return JPanel containing the race visuals
+     */
     private JPanel getRacePanel() {
         if (racePanel == null) {
             racePanel = new JPanel() {
@@ -180,7 +197,10 @@ public class RaceDisplay extends JPanel {
         return racePanel;
     }
 
-    // the buttons above the race, start, pause, reset
+    /**
+     * Returns the control panel containing Start, Pause, and Reset buttons.
+     * @return JPanel with control buttons
+     */
     private JPanel getControlPanel() {
         if (controlPanel == null) {
             controlPanel = new JPanel();
@@ -220,7 +240,10 @@ public class RaceDisplay extends JPanel {
         return controlPanel;
     }
 
-    //side panel scorebaord 
+    /**
+     * Returns a scrollable panel with the race scoreboard.
+     * @return JScrollPane for scoreboard table
+     */
     private JScrollPane getScoreboardPanel() {
         if (scoreboard == null) {
             String[] columns = {"Car ID", "Route", "Lap", "Speed", "Total Time", "Status"};
@@ -234,7 +257,10 @@ public class RaceDisplay extends JPanel {
         return new JScrollPane(scoreboard);
     }
 
-    // bottom panel that gives updates on race
+    /**
+     * Returns the narrator panel used to display race messages.
+     * @return JScrollPane for narrator text area
+     */
     private JScrollPane getNarratorPanel() {
         if (narrator == null) {
             narrator = new JTextArea(6, 40);
@@ -247,7 +273,9 @@ public class RaceDisplay extends JPanel {
         return new JScrollPane(narrator);
     }
 
-    //checkerbaord for startpage
+    /**
+     * Inner panel class that draws a checkerboard background for the start screen.
+     */
     private class CheckerBoard extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
@@ -267,7 +295,9 @@ public class RaceDisplay extends JPanel {
     }
 
 
-// --- 3 second Countdown ---
+    /**
+     * Starts a 3-second countdown before initiating the race.
+     */
     private void startCountdown() {
         if (countdownLabel == null) {
             countdownLabel = new JLabel("4", SwingConstants.CENTER);
@@ -294,7 +324,9 @@ public class RaceDisplay extends JPanel {
         countdownTimer.start();
     }
 
-    // --- Start Race ---
+    /**
+     * Starts the actual race and schedules periodic UI updates.
+     */
     private void startRace() {
         race.startRace();
         raceTimer = new Timer(100, e -> {
@@ -305,7 +337,10 @@ public class RaceDisplay extends JPanel {
         raceTimer.start();
     }
 
-    // --- Logging helper for the narrator text area.
+    /**
+     * Appends a message to the narrator area.
+     * @param message the string to log
+     */
     public static void log(String message) {
         if (instance != null && instance.narrator != null) {
             instance.narrator.append(message + "\n");
@@ -313,7 +348,10 @@ public class RaceDisplay extends JPanel {
         }
     }
 
-    // --- Main rendering routine for the race panel.
+    /**
+     * Draws the overall race including track, obstacles, checkpoints, and cars.
+     * @param g the Graphics object used to draw
+     */
     private void drawRace(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -338,7 +376,10 @@ public class RaceDisplay extends JPanel {
         drawCars(g2);
     }
 
-    // --- Draws the oval track ring (outer boundary + inner boundary).
+    /**
+     * Draws the track with grass and road ring using ellipses.
+     * @param g2 Graphics2D used to draw shapes
+     */
     private void drawTrack(Graphics2D g2) {
         int centerX = TRACK_CENTER_X;
         int centerY = TRACK_CENTER_Y;
@@ -381,7 +422,10 @@ public class RaceDisplay extends JPanel {
         g2.drawOval(innerX, innerY, innerW, innerH);
     }
 
-    // --- Draws checkpoint lines across the track.
+    /**
+     * Draws yellow checkpoint lines at key track locations.
+     * @param g2 Graphics2D used to draw lines
+     */
     private void drawStops(Graphics2D g2) {
         int halfWidth = TRACK_HALF_WIDTH;
         int centerX = TRACK_CENTER_X;
@@ -428,7 +472,10 @@ public class RaceDisplay extends JPanel {
         }
     }
 
-    // --- Draws obstacles (with partial transparency).
+    /**
+     * Renders all obstacles on the track based on shape and transparency.
+     * @param g2 Graphics2D used for obstacle drawing
+     */
     private void drawObstacles(Graphics2D g2) {
         for (Obstacle obs : race.getObstacles()) {
             int alpha = Math.min(255, obs.getLifetime() * 5);
@@ -463,7 +510,10 @@ public class RaceDisplay extends JPanel {
         }
     }
 
-    // --- Draws each car as a small rectangle with a little shadow.
+    /**
+     * Renders cars on the track with proper rotation and shadow.
+     * @param g2 Graphics2D used for car rendering
+     */
     private void drawCars(Graphics2D g2) {
         for (Car car : race.getCars()) {
             AffineTransform original = g2.getTransform();
@@ -497,7 +547,11 @@ public class RaceDisplay extends JPanel {
         }
     }
 
-    // --- Distinct color per car ID.
+    /**
+     * Returns a distinct color for each car by ID.
+     * @param id the unique ID of the car
+     * @return Color object corresponding to the car ID
+     */
     private Color getColorForCar(int id) {
         switch (id) {
             case 1:
@@ -511,7 +565,9 @@ public class RaceDisplay extends JPanel {
         }
     }
 
-    // --- Populates the scoreboard table with each car’s info.
+    /**
+     * Updates the scoreboard with current data for each car.
+     */
     private void updateScoreboard() {
         tableModel.setRowCount(0);
         for (Car car : race.getCars()) {
@@ -538,7 +594,10 @@ public class RaceDisplay extends JPanel {
         }
     }
 
-    // --- Called by Race to announce a winner in a popup.
+    /**
+     * Displays a popup window announcing the race winner.
+     * @param winner the car that finished the race first
+     */
     public void announceWinner(Car winner) {
         JOptionPane.showMessageDialog(this,
                 "Winner is Car " + winner.getId()

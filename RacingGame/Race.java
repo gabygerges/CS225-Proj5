@@ -1,9 +1,30 @@
+/**
+ * The Race class manages the core logic of a car racing game.
+ *
+ * It keeps track of all cars, race state (start, pause, reset), obstacles,
+ * and calculates race results. This class also coordinates race timing,
+ * collision detection, and communicates updates to the UI via {@link RaceDisplay}.
+ *
+ * Responsibilities:
+ *   Maintains a list of cars and obstacles<
+ *   Handles race timing and lap tracking
+ *   Spawns and removes obstacles during the race<
+ *   Detects collisions and applies obstacle effects<
+ *   Calculates and announces the race winner
+ *
+ *   Developed by: Abraham Arocha
+ */
+
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Represents a car race that manages multiple cars, tracks progress,
+ * handles obstacles, and updates the UI through the RaceDisplay.
+ */
 public class Race {
     private final List<Car> cars;
     private boolean isRunning;
@@ -17,24 +38,41 @@ public class Race {
     // Total laps for the race.
     private int totalLaps = 1;
 
+/** Constructs an empty race. **/
     public Race() {
         cars = new ArrayList<>();
         obstacles = new ArrayList<>();
         isRunning = false;
     }
 
+    /**
+     * Associates a RaceDisplay with this race for repainting and logging.
+     * @param display the RaceDisplay panel
+     */
     public void setRaceDisplay(RaceDisplay display) {
         this.raceDisplay = display;
     }
 
+    /**
+     * Returns the list of cars in the race.
+     * @return list of Car objects
+     */
     public List<Car> getCars() {
         return cars;
     }
 
+    /**
+     * Returns the list of active obstacles on the track.
+     * @return list of Obstacle objects
+     */
     public List<Obstacle> getObstacles() {
         return obstacles;
     }
 
+    /**
+     * Returns the user-controlled car, assumed to be Car with ID = 1.
+     * @return the user's Car instance or null if not found
+     */
     public Car getUserCar() {
         // The user-controlled car is ID=1.
         for (Car car : cars) {
@@ -45,23 +83,41 @@ public class Race {
         return null;
     }
 
+    /**
+     * Adds a car to the race.
+     * @param car the Car to add
+     */
     public void addCar(Car car) {
         cars.add(car);
     }
 
+    /**
+     * Returns whether the race is currently running.
+     * @return true if running, false if paused or not started
+     */
     public boolean isRunning() {
         return isRunning;
     }
 
+    /**
+     * Returns the total number of laps in the race.
+     * @return total laps
+     */
     public int getTotalLaps() {
         return totalLaps;
     }
 
+    /**
+     * Sets the total number of laps (minimum of 1).
+     * @param totalLaps number of laps
+     */
     public void setTotalLaps(int totalLaps) {
         this.totalLaps = Math.max(1, totalLaps);
     }
 
-    // Starts the race.
+    /**
+     * Starts the race if it is not already running.
+     */
     public void startRace() {
         if (!isRunning) {
             isRunning = true;
@@ -73,6 +129,9 @@ public class Race {
         }
     }
 
+    /**
+     * Pauses the race if it is currently running.
+     */
     public void pauseRace() {
         if (isRunning) {
             isRunning = false;
@@ -80,7 +139,10 @@ public class Race {
         }
     }
 
-    // Called periodically (by a Swing Timer) to update the race.
+    /**
+     * Updates race state, spawns and processes obstacles, and moves cars.
+     * Ends the race when all cars are finished.
+     */
     public void updateRaceStatus() {
         if (!isRunning)
             return;
@@ -134,7 +196,9 @@ public class Race {
         }
     }
 
-    // Logs final results and finds the winner.
+    /**
+     * Logs race results and identifies the winner.
+     */
     public void calculateResults() {
         Duration duration = Duration.between(startTime, endTime);
         RaceDisplay.log("Race Duration: " + duration.getSeconds() + " seconds");
@@ -165,7 +229,9 @@ public class Race {
         }
     }
 
-    // Resets everything (cars, obstacles, times).
+    /**
+     * Resets the race state including cars, obstacles, and timers.
+     */
     public void resetRace() {
         isRunning = false;
         for (Car car : cars) {

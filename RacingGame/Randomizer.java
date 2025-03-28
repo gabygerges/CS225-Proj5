@@ -1,21 +1,44 @@
+/**
+ * The Randomizer class provides utility methods to generate random
+ * values used during the car racing game.
+ * It supports generation of random speeds, lateral movement for AI cars,
+ * and fully configured random obstacles to be placed on or near the track.
+ *
+ * Responsibilities:
+ *   Provide random speed values for car behavior
+ *   Create slight lateral offsets to simulate AI drifting
+ *   Generate various random obstacles with types, colors, shapes, and positions
+ *
+ *   Developed by: Abraham Arocha, Lucas Martins
+ */
 import java.awt.Color;
 import java.util.Random;
 
 public class Randomizer {
     private static final Random rand = new Random();
 
-    // Random speed between ~50% and 100% of max.
+    /**
+     * Generates a random speed between 50% and 100% of the car's max speed.
+     * @param maxSpeed the car's maximum speed
+     * @return a random float speed within the valid range
+     */
     public static float generateRandomSpeed(float maxSpeed) {
         float minSpeed = maxSpeed / 2;
         return minSpeed + rand.nextFloat() * (maxSpeed - minSpeed);
     }
 
-    // Small random lateral offset for AI (-2..2).
+    /**
+     * Produces a small random lateral movement (between -2 and +2) for AI simulation.
+     * @return a float representing lateral drift delta
+     */
     public static float generateRandomLateralDelta() {
         return (float) ((Math.random() * 4) - 2);
     }
 
-    // Generate an obstacle near or on the track.
+    /**
+     * Generates a random obstacle on or near the race track with varied properties.
+     * @return a configured Obstacle instance
+     */
     public static Obstacle generateRandomObstacle() {
         float centerX = RaceDisplay.TRACK_CENTER_X;
         float centerY = RaceDisplay.TRACK_CENTER_Y;

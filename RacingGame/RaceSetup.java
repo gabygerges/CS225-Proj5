@@ -1,8 +1,27 @@
+/**
+ * The RaceSetup class initializes a new race scenario for the Car Racing Game.
+ * It prompts the user to choose the number of laps, defines hardcoded
+ * routes for three cars (each with a unique path around the track), creates engines and wheels,
+ * and attaches these components to the cars. All setup data is passed into a new Race object.
+ *
+ * Responsibilities:
+ *   Prompt user for lap configuration
+ *   Create routes using Location and Route
+ *   Assign engines and wheels to each car
+ *   Register cars with the race
+ *
+ *   Developed by: Abraham Arocha, Gabi Gerges
+ */
+
 import javax.swing.JOptionPane;
 import java.util.Arrays;
 import java.util.List;
 
 public class RaceSetup {
+    /**
+     * Initializes the race with user-defined lap count and three predefined cars/routes.
+     * @return a fully configured {@link Race} instance ready to begin
+     */
     public static Race initializeRace() {
         Race race = new Race();
 
