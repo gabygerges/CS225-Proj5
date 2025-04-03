@@ -1,5 +1,5 @@
 /**
- * The Main class serves as the entry point for the Formula 1-themed racing game.
+ * The Main class serves as the entry point for the racing game.
  * It initializes the race setup and launches the graphical user interface (GUI).
  *
  * Developed by: Lucas Martins

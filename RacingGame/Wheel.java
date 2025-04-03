@@ -3,7 +3,7 @@
  * Each wheel has a grip level and a wear-based condition that degrades
  * over time. The wheel's effective grip decreases as the condition worsens.
  *
- * Developed by: Lucas Martins
+ * Developed by: Lucas Martins, Gabi
  */
 
 public class Wheel {
